@@ -9,29 +9,27 @@ import {useNavigate}from'react-router-dom';
 
 export default function MainInput() {
     const[input,setInput]=useState('')
-    const[data,setData]=useState([])
-    const[weather,setWeather]=useState([])
+    const[data,setData]=useState({location:[]})
+    const [buttonClicked, setbuttonClicked] = useState(false)
+    const [history , sethistory] = useState([])
     const navigate=useNavigate()
 
-    // localStorage.setItem('WeatherData',JSON.stringify(weather))
     useEffect(() => {
-        if (input) {
+        if (buttonClicked === true) {
             weatherData();
-            
         }
-}, [input]);
+}, [buttonClicked]);
 
 async function weatherData() {
     try {
-        const existingData = JSON.parse(localStorage.getItem('WeatherData')) || [];
     const res = await getWeatherData(input);
     console.log(res)
     setData(res)
-    setWeather(res)
-localStorage.setItem('WeatherData', JSON.stringify(weather));
+    // sethistory((prevHistory) => [...prevHistory, {Name: res.location.name, Temp:res.current.temp_c}])
     } catch (error) {
     console.error('Error weather data:', error);
     }
+    setbuttonClicked(false)
 }
 
 function handleInput(e){
@@ -39,13 +37,14 @@ function handleInput(e){
     setInput(value)
 }
 function handleSearch(){
-    weatherData()
+    setbuttonClicked(true)
 }
-
-if (!data || !data.current) {
+function handleHistory(){
+    navigate('/search-history')
+}
+if (!data) {
     return <div><img src='https://css-tricks.com/wp-content/uploads/2011/02/spinnnnnn.gif'/></div>;
 }
-
 return (
     <div className='main-box'>
         <div>
@@ -55,7 +54,7 @@ return (
         <TextField  id="outlined-basic" label="Enter Your City" variant="outlined" onChange={handleInput} fullWidth />
     <br/><br/>
     <Button variant="contained" onClick={handleSearch}>Search</Button>
-    <Button variant="contained" onClick={()=>navigate('/search-history')}>History</Button>
+    <Button variant="contained" onClick={handleHistory}>History</Button>
         </div>
         <div className='contant1 container'>
         <div style={{fontSize:'5rem',fontWeight:'600'}}>{data.current.temp_c} °C</div>
