@@ -59,7 +59,7 @@ export default function MainInput() {
             </div>
             {data && (
                 <div className='contant1 container'>
-                    <div style={{ fontSize: '5rem', fontWeight: '600' }}>{data.current.temp_c} °C</div>
+                    <div className='mob' >{data.current.temp_c} °C</div>
                     <div>
                         <h1 style={{ fontSize: '3rem' }}>{data.location.name}</h1>
                         <p>{data.location.localtime}</p>
@@ -72,11 +72,11 @@ export default function MainInput() {
             {data && (
                 <div className='container contant2'>
                     <img src='https://cdn-icons-png.flaticon.com/128/9176/9176568.png' alt="Weather Details Icon" width={50} />
-                    <div>
+                    <div style={{paddingTop:'10px'}}>
                         <h5>Weather Details...</h5>
                     </div>
                     <br />
-                    <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', flexWrap:'wrap' ,gap:'30px' }}>
                         <div>
                             {data.current.condition.text}
                             <p>{data.current.wind_kph}</p>
